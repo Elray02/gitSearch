@@ -19,9 +19,20 @@
       <h2 class="tui-island__title">
         {{ user.name }}
       </h2>
-      <p class="tui-island__paragraph">
-        {{ user.bio }}
-      </p>
+      <div class="tui-island__paragraph cardGrid">
+        <div>
+          <h3>Follower</h3>
+          <p class="follower">{{ user.followers }}</p>
+        </div>
+        <div>
+          <h3>Following</h3>
+          <p class="following">{{ user.following }}</p>
+        </div>
+        <div>
+          <h3>Repos</h3>
+          <p class="repos">{{ user.public_repos }}</p>
+        </div>
+      </div>
 
       <a
         tuiButton
