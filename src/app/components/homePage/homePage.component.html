@@ -8,6 +8,12 @@
       <!-- search bar -->
       <app-search (userResearch)="searchValue($event)"></app-search>
       <!-- end search bar -->
+      <tui-pagination
+        *ngIf="!(showLoader | async)"
+        [length]="paginatorLength"
+        [index]="indexPaginator"
+        (indexChange)="goToPage($event)"
+      ></tui-pagination>
       <tui-loader
         class="inline-flex tui-space_right-2"
         [showLoader]="showLoader | async"
