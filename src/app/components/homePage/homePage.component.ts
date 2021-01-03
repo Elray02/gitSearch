@@ -16,7 +16,7 @@ import { GitUser } from 'src/app/model/gitUser.model';
 import { UserProfile } from 'src/app/model/userProfile.model';
 
 @Component({
-  selector: 'app-homePage',
+  selector: 'app-home-page',
   templateUrl: './homePage.component.html',
   styleUrls: ['./homePage.component.less'],
 })
