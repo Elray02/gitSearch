@@ -25,46 +25,11 @@
       <app-search (userResearch)="searchValue($event)"></app-search>
       <!-- end search bar -->
       <div class="cardsHolder" *ngIf="userList | async as list">
-        <tui-island
-          size="l"
-          textAlign="center"
-          class="card tui-island tui-island_size_m"
-          [hoverable]="true"
-          [class.tui-skeleton]="showLoader | async"
-          [class.tui-skeleton_light]="true"
+        <app-card-profile
           *ngFor="let user of list"
-        >
-          <div class="tui-island__content">
-            <tui-avatar
-              class="tui-space_top-3"
-              text="{{ user.name }}"
-              size="l"
-              [autoColor]="true"
-              [avatarUrl]="user.avatar_url"
-              [rounded]="true"
-            ></tui-avatar>
-            <div>
-              <h2 class="tui-island__title">
-                {{ user.name }}
-              </h2>
-              <p class="tui-island__paragraph">
-                {{ user.bio }}
-              </p>
-
-              <a
-                tuiButton
-                type="button"
-                href="{{ user.html_url }}"
-                class="tui-island__footer-button"
-                appearance="flat"
-                size="l"
-                target="_blank"
-              >
-                Visit the profile
-              </a>
-            </div>
-          </div>
-        </tui-island>
+          [user]="user"
+          [showScheleton]="showLoader | async"
+        ></app-card-profile>
 
         <ng-container *ngIf="list.length === 0">
           <h1
