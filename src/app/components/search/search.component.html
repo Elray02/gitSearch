@@ -1,3 +1,9 @@
-<p>
-  search works!
-</p>
+<div class="tui-island__title">
+  <tui-input
+    icon="tuiIconSearchLarge"
+    tuiAutoFocus
+    [(ngModel)]="inputUser"
+    (ngModelChange)="searchValue()"
+    >Search for a gitHub account</tui-input
+  >
+</div>
