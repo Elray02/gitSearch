@@ -1,20 +1,4 @@
-<p>
-  <!-- <button
-    tuiButton
-    type="button"
-    size="xs"
-    class="tui-space_right-2"
-    (click)="showSkelet()"
-  >
-    Show/hide skeleton
-  </button> -->
-  <!-- <button tuiButton type="button" size="xs" (click)="toggleLight()">
-    Light mode
-  </button> -->
-</p>
 <div class="tui-container">
-  <!-- [class.container_dark]="lightMode"
-  [tuiMode]="lightMode ? 'light' : null" -->
   <div class="tui-row">
     <h1>GitHub user search</h1>
   </div>
@@ -24,8 +8,17 @@
       <!-- search bar -->
       <app-search (userResearch)="searchValue($event)"></app-search>
       <!-- end search bar -->
+      <tui-loader
+        class="inline-flex tui-space_right-2"
+        [showLoader]="showLoader | async"
+        [size]="'l'"
+        [inheritColor]="true"
+        [overlay]="true"
+      >
+      </tui-loader>
       <div class="cardsHolder" *ngIf="userList | async as list">
         <app-card-profile
+          [@fadeSlideInOut]="!(showLoader | async)"
           *ngFor="let user of list"
           [user]="user"
           [showScheleton]="showLoader | async"
@@ -40,14 +33,6 @@
           </h1>
         </ng-container>
       </div>
-      <tui-loader
-        class="inline-flex tui-space_right-2"
-        [showLoader]="showLoader | async"
-        [size]="'l'"
-        [inheritColor]="true"
-        [overlay]="true"
-      >
-      </tui-loader>
 
       <!-- end container -->
     </tui-island>
