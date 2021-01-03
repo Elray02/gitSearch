@@ -22,15 +22,7 @@
     <!-- start container -->
     <tui-island size="l" class="tui-col_md-12 tui-col_adaptive light">
       <!-- search bar -->
-      <div class="tui-island__title">
-        <tui-input
-          icon="tuiIconSearchLarge"
-          tuiAutoFocus
-          [(ngModel)]="inputUser"
-          (ngModelChange)="searchValue()"
-          >Search for a gitHub account</tui-input
-        >
-      </div>
+      <app-search (userResearch)="searchValue($event)"></app-search>
       <!-- end search bar -->
       <div class="cardsHolder" *ngIf="userList | async as list">
         <tui-island
