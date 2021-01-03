@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { iif, Observable, of, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { GitResponse } from 'src/app/model/gitResponse.model';
 import { GitSearchService } from 'src/app/services/gitSearch.service';
 import {
@@ -15,7 +15,6 @@ import {
 import { GitUser } from 'src/app/model/gitUser.model';
 import { UserProfile } from 'src/app/model/userProfile.model';
 
-
 @Component({
   selector: 'app-homePage',
   templateUrl: './homePage.component.html',
@@ -28,7 +27,6 @@ export class HomePageComponent implements OnInit {
 
   skeletonVisible = false;
 
-  inputUser = '';
   showLoader: Subject<boolean> = new Subject<boolean>();
 
   constructor(private service: GitSearchService) {}
@@ -36,13 +34,13 @@ export class HomePageComponent implements OnInit {
   ngOnInit() {
     this.userList = this.inputSearch.pipe(
       debounceTime(500),
-      filter((c) => this.inputUser !== ''),
+      filter((newSearch: string) => newSearch !== ''),
       tap((x) => {
         this.showLoader.next(true);
         this.showSkelet();
       }),
-      switchMap(() =>
-        this.service.gitUserSearch(this.inputUser).pipe(
+      switchMap((newSearch: string) =>
+        this.service.gitUserSearch(newSearch).pipe(
           takeWhile((r: GitResponse) => r.total_count > 0),
           map((r: GitResponse) => r.items),
           switchMap((users: GitUser[]) => users.map((u) => u.url)),
@@ -63,8 +61,7 @@ export class HomePageComponent implements OnInit {
     this.skeletonVisible = !this.skeletonVisible;
   }
 
-  searchValue() {
-    this.inputSearch.next('');
+  searchValue(newSearch: string) {
+    this.inputSearch.next(newSearch);
   }
-
 }
