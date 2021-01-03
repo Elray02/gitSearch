@@ -21,9 +21,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { iconsPathFactory, TUI_ICONS_PATH } from '@taiga-ui/core';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { TuiAutoFocusModule } from '@taiga-ui/cdk';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
-  declarations: [AppComponent, HomePageComponent],
+  declarations: [AppComponent, HomePageComponent, SearchComponent],
   imports: [
     BrowserModule,
     TuiRootModule,
