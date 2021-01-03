@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { GitResponse } from '../model/gitResponse.model';
 import { Observable, of } from 'rxjs';
 import { UserProfile } from '../model/userProfile.model';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
+import { SearchQuery } from '../model/searchQuery.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -15,10 +16,9 @@ export class GitSearchService {
     private readonly notificationsService: TuiNotificationsService
   ) {}
 
-  gitUserSearch(query: string): Observable<GitResponse> {
-
+  gitUserSearch(query: SearchQuery): Observable<GitResponse> {
     console.log(query);
-    const url = `https://api.github.com/search/users?q=${query}+sort:followers+followers:>1000`;
+    const url = `https://api.github.com/search/users?q=${query.userInput}+sort:followers+followers:>1000&page=${query.page}&per_page=10`;
     return this.http
       .get<GitResponse>(url)
       .pipe(catchError(this.handleError<any>('search for user')));
@@ -29,8 +29,6 @@ export class GitSearchService {
       .get<UserProfile>(url)
       .pipe(catchError(this.handleError<any>('get user info')));
   }
-
-
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
