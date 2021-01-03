@@ -1,3 +1,100 @@
 <p>
-  homePage works!
+  <!-- <button
+    tuiButton
+    type="button"
+    size="xs"
+    class="tui-space_right-2"
+    (click)="showSkelet()"
+  >
+    Show/hide skeleton
+  </button> -->
+  <button tuiButton type="button" size="xs" (click)="toggleLight()">
+    Light mode
+  </button>
 </p>
+<div
+  class="tui-container"
+  [class.container_dark]="lightMode"
+  [tuiMode]="lightMode ? 'light' : null"
+>
+  <div class="tui-row">
+    <h1>GitHub user search</h1>
+  </div>
+  <div class="tui-row tui-row_adaptive mainRow">
+    <!-- start container -->
+    <tui-island size="l" class="tui-col_md-12 tui-col_adaptive light">
+      <!-- search bar -->
+      <div class="tui-island__title">
+        <tui-input
+          icon="tuiIconSearchLarge"
+          tuiAutoFocus
+          [(ngModel)]="name"
+          (ngModelChange)="searchValue()"
+          >Search for a gitHub account</tui-input
+        >
+      </div>
+      <!-- end search bar -->
+      <div class="cardsHolder" *ngIf="userList | async as list">
+        <tui-island
+          size="l"
+          textAlign="center"
+          class="card tui-island tui-island_size_m"
+          [hoverable]="true"
+          [class.tui-skeleton]="showLoader | async"
+          [class.tui-skeleton_light]="lightMode"
+          *ngFor="let user of list"
+        >
+          <div class="tui-island__content">
+            <tui-avatar
+              class="tui-space_top-3"
+              text="{{ user.name }}"
+              size="l"
+              [autoColor]="true"
+              [avatarUrl]="user.avatar_url"
+              [rounded]="true"
+            ></tui-avatar>
+            <div>
+              <h2 class="tui-island__title">
+                {{ user.name }}
+              </h2>
+              <p class="tui-island__paragraph">
+                {{ user.bio }}
+              </p>
+
+              <a
+                tuiButton
+                type="button"
+                href="{{ user.html_url }}"
+                class="tui-island__footer-button"
+                appearance="flat"
+                size="l"
+                target="_blank"
+              >
+                Visit the profile
+              </a>
+            </div>
+          </div>
+        </tui-island>
+
+        <ng-container *ngIf="list.length === 0">
+          <h1
+            [class.tui-skeleton]="showLoader | async"
+            [class.tui-skeleton_light]="lightMode"
+          >
+            Try again!
+          </h1>
+        </ng-container>
+      </div>
+      <tui-loader
+        class="inline-flex tui-space_right-2"
+        [showLoader]="showLoader | async"
+        [size]="'l'"
+        [inheritColor]="true"
+        [overlay]="true"
+      >
+      </tui-loader>
+
+      <!-- end container -->
+    </tui-island>
+  </div>
+</div>
