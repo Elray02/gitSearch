@@ -10,7 +10,7 @@
     <tui-avatar
       class="tui-space_top-3"
       text="{{ user.name }}"
-      size="l"
+      size="xl"
       [autoColor]="true"
       [avatarUrl]="user.avatar_url"
       [rounded]="true"
@@ -20,15 +20,15 @@
         {{ user.name }}
       </h2>
       <div class="tui-island__paragraph cardGrid">
-        <div>
+        <div class="follower">
           <h3>Follower</h3>
           <p class="follower">{{ user.followers }}</p>
         </div>
-        <div>
+        <div class="following">
           <h3>Following</h3>
           <p class="following">{{ user.following }}</p>
         </div>
-        <div>
+        <div class="repos">
           <h3>Repos</h3>
           <p class="repos">{{ user.public_repos }}</p>
         </div>
@@ -39,10 +39,11 @@
         type="button"
         href="{{ user.html_url }}"
         class="tui-island__footer-button"
-        appearance="flat"
         size="l"
+        appearance="fedeStyle"
         target="_blank"
-      >
+        >
+        <!-- appearance="outline" -->
         Visit the profile
       </a>
     </div>
