@@ -16,6 +16,7 @@ import {
   TuiAvatarModule,
   TuiInputModule,
   TuiIslandModule,
+  TuiPaginationModule,
 } from '@taiga-ui/kit';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { iconsPathFactory, TUI_ICONS_PATH } from '@taiga-ui/core';
@@ -46,6 +47,7 @@ import { CardProfileComponent } from './components/cardProfile/cardProfile.compo
     TuiLoaderModule,
     TuiAutoFocusModule,
     TuiAvatarModule,
+    TuiPaginationModule
   ],
   providers: [
     {
