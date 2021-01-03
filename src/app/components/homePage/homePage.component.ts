@@ -16,6 +16,7 @@ import {
 import { GitUser } from 'src/app/model/gitUser.model';
 import { UserProfile } from 'src/app/model/userProfile.model';
 import { cardAnimation } from '../../animation';
+import { SearchQuery } from 'src/app/model/searchQuery.model';
 
 @Component({
   selector: 'app-home-page',
@@ -34,22 +35,37 @@ export class HomePageComponent implements OnInit {
   showLoader: Subject<boolean> = new Subject<boolean>();
   private errorMessageSubject = new Subject<string>();
   errorMessage$ = this.errorMessageSubject.asObservable();
+  paginatorLength = 0;
+
+  currentPage: BehaviorSubject<number> = new BehaviorSubject(1);
+  indexPaginator = 0;
 
   constructor(private service: GitSearchService) {}
 
   ngOnInit() {
-    this.userList = combineLatest([this.userSubject$, this.inputSearch]).pipe(
-      map((mix: [UserProfile[], string]) => mix[1]),
+    this.userList = combineLatest([
+      this.userSubject$,
+      this.inputSearch,
+      this.currentPage,
+    ]).pipe(
+      map((mix: [UserProfile[], string, number]) => {
+        const newSearch: SearchQuery = { userInput: mix[1], page: mix[2] };
+        return newSearch;
+      }),
       debounceTime(400),
-      filter((newSearch: string) => newSearch !== ''),
+      filter((newSearch: SearchQuery) => newSearch.userInput !== ''),
       tap((x) => {
         this.showLoader.next(true);
         this.showSkelet();
       }),
-      switchMap((newSearch: string) =>
+      switchMap((newSearch: SearchQuery) =>
         this.service.gitUserSearch(newSearch).pipe(
+          tap((x) => console.log(x)),
           takeWhile((r: GitResponse) => r.total_count > 0),
-          map((r: GitResponse) => r.items),
+          map((r: GitResponse) => {
+            this.paginatorLength = Math.ceil(r.total_count / 10);
+            return r.items;
+          }),
           switchMap((users: GitUser[]) => users.map((u) => u.url)),
           concatMap((userLink: string) =>
             this.service.gitUserInfomation(userLink)
@@ -66,6 +82,18 @@ export class HomePageComponent implements OnInit {
         return EMPTY;
       })
     );
+
+    combineLatest([
+      this.inputSearch.pipe(
+        debounceTime(100),
+        filter((newSearch: string) => newSearch === '')
+      ),
+      this.userList.pipe(
+        filter((newSearch: UserProfile[]) => newSearch.length === 0)
+      ),
+    ]).subscribe((x) => {
+      this.resetPagination();
+    });
   }
 
   showSkelet() {
@@ -74,5 +102,15 @@ export class HomePageComponent implements OnInit {
 
   searchValue(newSearch: string) {
     this.inputSearch.next(newSearch);
+  }
+
+  goToPage(index: number) {
+    this.currentPage.next(index + 1);
+    this.indexPaginator = index;
+    console.log('New page:', index);
+  }
+
+  resetPagination() {
+    this.indexPaginator = 0;
   }
 }
