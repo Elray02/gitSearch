@@ -4,6 +4,10 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { HomePageComponent } from './homePage.component';
+import { CardProfileComponent } from '../cardProfile/cardProfile.component';
+import { SearchComponent } from '../search/search.component';
+import { TuiLoaderModule } from '@taiga-ui/core';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -11,9 +15,9 @@ describe('HomePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomePageComponent ]
-    })
-    .compileComponents();
+      declarations: [HomePageComponent, CardProfileComponent, SearchComponent],
+      imports: [TuiLoaderModule, HttpClientModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

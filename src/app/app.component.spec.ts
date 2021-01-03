@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/homePage/homePage.component';
@@ -6,6 +7,7 @@ describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent, HomePageComponent],
+      imports: [HttpClientModule],
     }).compileComponents();
   }));
 
@@ -15,13 +17,12 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('p').textContent).toContain(
-      'homePage works!'
+    expect(compiled.querySelector('h1').textContent).toContain(
+      'GitHub user search'
     );
   });
 });
