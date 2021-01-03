@@ -39,6 +39,7 @@ export class HomePageComponent implements OnInit {
 
   currentPage: BehaviorSubject<number> = new BehaviorSubject(1);
   indexPaginator = 0;
+  totalResult = 0;
 
   constructor(private service: GitSearchService) {}
 
@@ -63,6 +64,7 @@ export class HomePageComponent implements OnInit {
           tap((x) => console.log(x)),
           takeWhile((r: GitResponse) => r.total_count > 0),
           map((r: GitResponse) => {
+            this.totalResult = r.total_count;
             this.paginatorLength = Math.ceil(r.total_count / 10);
             return r.items;
           }),
