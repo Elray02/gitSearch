@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, EMPTY, Subject } from 'rxjs';
 import { GitResponse } from 'src/app/model/gitResponse.model';
 import { GitSearchService } from 'src/app/services/gitSearch.service';
 import {
+  catchError,
   concatMap,
   debounceTime,
   filter,
@@ -14,26 +15,32 @@ import {
 } from 'rxjs/operators';
 import { GitUser } from 'src/app/model/gitUser.model';
 import { UserProfile } from 'src/app/model/userProfile.model';
+import { cardAnimation } from '../../animation';
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './homePage.component.html',
   styleUrls: ['./homePage.component.less'],
+  animations: [cardAnimation],
 })
 export class HomePageComponent implements OnInit {
-  userSubject$: Subject<UserProfile[]> = new Subject<UserProfile[]>();
   inputSearch: Subject<string> = new Subject<string>();
+  userSubject$: BehaviorSubject<UserProfile[]> = new BehaviorSubject<
+    UserProfile[]
+  >([]);
   userList = this.userSubject$.asObservable();
-
   skeletonVisible = false;
 
   showLoader: Subject<boolean> = new Subject<boolean>();
+  private errorMessageSubject = new Subject<string>();
+  errorMessage$ = this.errorMessageSubject.asObservable();
 
   constructor(private service: GitSearchService) {}
 
   ngOnInit() {
-    this.userList = this.inputSearch.pipe(
-      debounceTime(500),
+    this.userList = combineLatest([this.userSubject$, this.inputSearch]).pipe(
+      map((mix: [UserProfile[], string]) => mix[1]),
+      debounceTime(400),
       filter((newSearch: string) => newSearch !== ''),
       tap((x) => {
         this.showLoader.next(true);
@@ -53,6 +60,10 @@ export class HomePageComponent implements OnInit {
       tap((x) => {
         this.showLoader.next(false);
         this.showSkelet();
+      }),
+      catchError((err) => {
+        this.errorMessageSubject.next(err);
+        return EMPTY;
       })
     );
   }
