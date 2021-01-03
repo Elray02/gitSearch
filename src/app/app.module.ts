@@ -22,9 +22,15 @@ import { iconsPathFactory, TUI_ICONS_PATH } from '@taiga-ui/core';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { TuiAutoFocusModule } from '@taiga-ui/cdk';
 import { SearchComponent } from './components/search/search.component';
+import { CardProfileComponent } from './components/cardProfile/cardProfile.component';
 
 @NgModule({
-  declarations: [AppComponent, HomePageComponent, SearchComponent],
+  declarations: [
+    AppComponent,
+    HomePageComponent,
+    SearchComponent,
+    CardProfileComponent,
+  ],
   imports: [
     BrowserModule,
     TuiRootModule,
