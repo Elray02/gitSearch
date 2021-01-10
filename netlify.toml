@@ -1,0 +1,3 @@
+[build]
+    publish ='dist/gitSearch'
+    command ='ng build --prod'
