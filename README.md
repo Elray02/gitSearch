@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a47af47e-b163-496e-9f6d-b88999930458/deploy-status)](https://app.netlify.com/sites/gitstarsearch/deploys)
+
 # GitSearch
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.3.
