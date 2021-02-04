@@ -50,8 +50,7 @@ Thumbs.db
 .netlify
 
 # Environtment file
-environment.prod.ts
-environment.ts
+/environments
 
 #global variable
 .env
