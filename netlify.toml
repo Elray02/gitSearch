@@ -1,3 +1,4 @@
 [build]
     publish ='dist/gitSearch'
-    command ='ng build --prod'
+    command ='npm run config -- --environment=prod ng build'
+
