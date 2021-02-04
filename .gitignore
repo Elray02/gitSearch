@@ -48,3 +48,10 @@ Thumbs.db
 
 # Local Netlify folder
 .netlify
+
+# Environtment file
+environment.prod.ts
+environment.ts
+
+#global variable
+.env
