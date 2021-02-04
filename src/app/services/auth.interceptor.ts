@@ -12,11 +12,11 @@ import {
   HttpInterceptor,
 } from '@angular/common/http';
 
-import { environment } from '../../environments/environment';
+const { env } = require('../../environments/environment');
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private localToken = environment.TOKEN__GIT;
+  private localToken = env.TOKEN__GIT;
 
   constructor() {}
 
