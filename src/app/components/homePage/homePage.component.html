@@ -17,8 +17,8 @@
       <app-search (userResearch)="searchValue($event)"></app-search>
       <!-- end search bar -->
       <tui-pagination
-        *ngIf="!(showLoader | async)"
-        [length]="paginatorLength"
+        *ngIf="this.showPaginator | async"
+        [length]="paginatorLength | async"
         [index]="indexPaginator"
         (indexChange)="goToPage($event)"
       ></tui-pagination>
