@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest, EMPTY, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  EMPTY,
+  iif,
+  Observable,
+  of,
+  Subject,
+} from 'rxjs';
 import { GitResponse } from 'src/app/model/gitResponse.model';
 import { GitSearchService } from 'src/app/services/gitSearch.service';
 import {
@@ -9,6 +17,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  mergeMap,
   switchMap,
   takeWhile,
   tap,
@@ -33,10 +42,11 @@ export class HomePageComponent implements OnInit {
   userList = this.userSubject$.asObservable();
   skeletonVisible = false;
 
-  showLoader: Subject<boolean> = new Subject<boolean>();
+  showLoader: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private errorMessageSubject = new Subject<string>();
   errorMessage$ = this.errorMessageSubject.asObservable();
-  paginatorLength = 0;
+  paginatorLength: BehaviorSubject<number> = new BehaviorSubject(0);
+  showPaginator: Observable<boolean>;
 
   currentPage: BehaviorSubject<number> = new BehaviorSubject(1);
   indexPaginator = 0;
@@ -65,7 +75,7 @@ export class HomePageComponent implements OnInit {
           takeWhile((r: GitResponse) => r.total_count > 0),
           map((r: GitResponse) => {
             this.totalResult = r.total_count;
-            this.paginatorLength = Math.ceil(r.total_count / 10);
+            this.paginatorLength.next(Math.ceil(r.total_count / 10));
             return r.items;
           }),
           switchMap((users: GitUser[]) => users.map((u) => u.url)),
@@ -88,6 +98,15 @@ export class HomePageComponent implements OnInit {
     this.inputSearch
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((x) => this.resetPagination());
+
+    this.showPaginator = combineLatest([
+      this.paginatorLength,
+      this.showLoader,
+    ]).pipe(
+      mergeMap((x: [number, boolean]) =>
+        iif(() => x[0] === 0, of(false), of(!x[1]))
+      )
+    );
   }
 
   showSkelet() {
@@ -104,7 +123,6 @@ export class HomePageComponent implements OnInit {
   }
 
   resetPagination() {
-
     this.indexPaginator = 0;
     this.currentPage.next(1);
   }
