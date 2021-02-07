@@ -10,6 +10,7 @@ import { SearchQuery } from '../model/searchQuery.model';
   providedIn: 'root',
 })
 export class GitSearchService {
+  baseUrl = 'https://api.github.com/search/users';
   constructor(
     private http: HttpClient,
     @Inject(TuiNotificationsService)
@@ -17,10 +18,16 @@ export class GitSearchService {
   ) {}
 
   gitUserSearch(query: SearchQuery): Observable<GitResponse> {
-    console.log(query);
-    const url = `https://api.github.com/search/users?q=${query.userInput}+sort:followers+followers:>1000&page=${query.page}&per_page=10`;
+    const minFollower = 1000;
+    const par = {
+      params: {
+        q: `${query.userInput}+sort:followers+followers:>${minFollower}`,
+        page: `${query.page}`,
+        per_page: '10',
+      },
+    };
     return this.http
-      .get<GitResponse>(url)
+      .get<GitResponse>(this.baseUrl, { ...par })
       .pipe(catchError(this.handleError<any>('search for user')));
   }
 
