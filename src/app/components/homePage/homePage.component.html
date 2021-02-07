@@ -1,21 +1,25 @@
 <div class="tui-container">
-  <ng-container *ngIf="!(showLoader | async); else searchEnd">
-    <div class="tui-row" [@fadeSlideInOut]="showLoader | async">
+  <div class="tui-row header">
+    <div>
       <h1>GitHub stars user search</h1>
     </div>
-  </ng-container>
-  <ng-template #searchEnd>
-    <div class="tui-row">
-      <h1>Stars user found:{{ totalResult }}</h1>
-    </div>
-  </ng-template>
+  </div>
 
   <div class="tui-row tui-row_adaptive mainRow">
     <!-- start container -->
-    <tui-island size="l" class="tui-col_md-12 tui-col_adaptive light">
+    <tui-island
+      size="l"
+      class="tui-col_md-12 tui-col_adaptive light"
+      textAlign="center"
+    >
       <!-- search bar -->
       <app-search (userResearch)="searchValue($event)"></app-search>
       <!-- end search bar -->
+      <div *ngIf="this.showPaginator | async">
+        <h2 [@fadeSlideInOut]="(totalResult | async) > 0">
+          Stars user found:{{ totalResult | async }}
+        </h2>
+      </div>
       <tui-pagination
         *ngIf="this.showPaginator | async"
         [length]="paginatorLength | async"

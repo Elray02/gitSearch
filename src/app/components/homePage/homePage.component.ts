@@ -50,7 +50,7 @@ export class HomePageComponent implements OnInit {
 
   currentPage: BehaviorSubject<number> = new BehaviorSubject(1);
   indexPaginator = 0;
-  totalResult = 0;
+  totalResult: BehaviorSubject<number> = new BehaviorSubject(0);
 
   constructor(private service: GitSearchService) {}
 
@@ -74,7 +74,7 @@ export class HomePageComponent implements OnInit {
         this.service.gitUserSearch(newSearch).pipe(
           takeWhile((r: GitResponse) => r.total_count > 0),
           map((r: GitResponse) => {
-            this.totalResult = r.total_count;
+            this.totalResult.next(r.total_count);
             this.paginatorLength.next(Math.ceil(r.total_count / 10));
             return r.items;
           }),
@@ -104,7 +104,7 @@ export class HomePageComponent implements OnInit {
       this.showLoader,
     ]).pipe(
       mergeMap((x: [number, boolean]) =>
-        iif(() => x[0] === 0, of(false), of(!x[1]))
+        iif(() => x[0] <= 0, of(false), of(!x[1]))
       )
     );
   }
@@ -123,6 +123,8 @@ export class HomePageComponent implements OnInit {
   }
 
   resetPagination() {
+    this.paginatorLength.next(0);
+    this.totalResult.next(0);
     this.indexPaginator = 0;
     this.currentPage.next(1);
   }
