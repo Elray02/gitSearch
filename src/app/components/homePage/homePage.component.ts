@@ -6,6 +6,7 @@ import {
   catchError,
   concatMap,
   debounceTime,
+  distinctUntilChanged,
   filter,
   map,
   switchMap,
@@ -53,15 +54,14 @@ export class HomePageComponent implements OnInit {
         const newSearch: SearchQuery = { userInput: mix[1], page: mix[2] };
         return newSearch;
       }),
-      debounceTime(400),
       filter((newSearch: SearchQuery) => newSearch.userInput !== ''),
       tap((x) => {
         this.showLoader.next(true);
         this.showSkelet();
       }),
+      debounceTime(400),
       switchMap((newSearch: SearchQuery) =>
         this.service.gitUserSearch(newSearch).pipe(
-          tap((x) => console.log(x)),
           takeWhile((r: GitResponse) => r.total_count > 0),
           map((r: GitResponse) => {
             this.totalResult = r.total_count;
@@ -85,17 +85,9 @@ export class HomePageComponent implements OnInit {
       })
     );
 
-    combineLatest([
-      this.inputSearch.pipe(
-        debounceTime(100),
-        filter((newSearch: string) => newSearch === '')
-      ),
-      this.userList.pipe(
-        filter((newSearch: UserProfile[]) => newSearch.length === 0)
-      ),
-    ]).subscribe((x) => {
-      this.resetPagination();
-    });
+    this.inputSearch
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe((x) => this.resetPagination());
   }
 
   showSkelet() {
@@ -109,10 +101,11 @@ export class HomePageComponent implements OnInit {
   goToPage(index: number) {
     this.currentPage.next(index + 1);
     this.indexPaginator = index;
-    console.log('New page:', index);
   }
 
   resetPagination() {
+
     this.indexPaginator = 0;
+    this.currentPage.next(1);
   }
 }
