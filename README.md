@@ -1,29 +1,38 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a47af47e-b163-496e-9f6d-b88999930458/deploy-status)](https://app.netlify.com/sites/gitstarsearch/deploys)
 
-# GitSearch
+# GitStarsSearch :star2:
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.3.
+> This project was originally done for a job interview. Which i worked on for a week :fire:
 
-## Development server
+> Tasks requested :
+> As a user,
+> ● I can search for users and see a paginated list of results
+> ● I can navigate through the next and previous pages of the paginated results
+> ● I see the total count of search results
+> ● I see notable information for each search result, such as the description, star/follower count, profile pictures, etc.
+> ● I can select a search result and be taken to the applicable page on github.com API
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Quick Start :rocket:
 
-## Code scaffolding
+```bash
+# Make a copy of this repo
+$ git clone https://github.com/Elray02/gitSearch
+$ cd gitSearch
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# Install project dependencies
+$ npm i
 
-## Build
+# Start development server
+$ npm run start # Opens browser at http://localhost:4200
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+# Production build
+$ npm run build    # Outputs to ./dist directory
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Dependencies :nut_and_bolt:
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+| name                                               | license                                                                                                                                        | version        | description                                                                                  |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | -------------------------------------------------------------------------------------------- |
+| [`Angular`](https://github.com/angular/angular)    | [![License](https://badgen.net/github/license/angular/angular/)](https://angular.io/licensee)                                                  | version 9.1.3. | Development platform for building mobile and desktop web applications                        |
+| [`Taiga UI`](https://taiga-ui.dev/getting-started) | [![License](https://badgen.net/github/license/TinkoffCreditSystems/taiga-ui)](https://api.github.com/repos/ReactTraining/react-router/license) | version 2.0.0  | Fully-treeshakable Angular UI Kit consisting of multiple base libraries and several add-ons. |
